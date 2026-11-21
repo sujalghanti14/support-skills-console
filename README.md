@@ -4,7 +4,7 @@
 
 **Live demo:** https://support-skills-console.onrender.com *(free hosting: the first visit after a quiet spell takes up to ~50 s to wake)*
 
-**Submission documents:** [Project report (.docx)](submission/Project-Report.docx) · [Presentation (.pptx)](submission/Presentation.pptx)
+**Submission documents:** Project report ([PDF](submission/Project-Report.pdf) · [Word](submission/Project-Report.docx)) · [Presentation (.pptx)](submission/Presentation.pptx)
 
 **New here?** Jump to **[How to use it](#how-to-use-it)**.
 
@@ -183,7 +183,7 @@ python .claude/skills/support-reply/scripts/check_reply.py samples/reply-bad.txt
 | `company-docs/` | Refund/pricing policy and changelog the checks read on every run |
 | `samples/` | Example inputs for each skill (good and bad) |
 | `webapp/` | Flask app, static UI, tests, screenshots |
-| `submission/` | Project report and presentation |
+| `submission/` | Project report (PDF and Word) and presentation |
 | `DECISIONS.md` | Skill vs Agent vs Neither reasoning |
 | `render.yaml`, `requirements*.txt` | Hosting and dependencies |
 | `.github/workflows/tests.yml` | CI: runs every test on each push |
