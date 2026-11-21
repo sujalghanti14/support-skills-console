@@ -6,6 +6,8 @@
 
 **Submission documents:** [Project report (.docx)](submission/Project-Report.docx) · [Presentation (.pptx)](submission/Presentation.pptx)
 
+**New here?** Jump to **[How to use it](#how-to-use-it)**.
+
 ---
 
 ## The brief
@@ -79,6 +81,64 @@ Each skill pairs **instructions for the model** (`SKILL.md`: the procedure, rule
 ![Reply check](webapp/screenshots/1-reply-check-light.png)
 
 A small Flask app with one tab per skill. Each tab has a **Load example** button and a plain-language **How to use this** guide. It supports dark mode and phone screens, and is hosted on Render (`render.yaml`).
+
+## How to use it
+
+There are three ways to use the tool. You don't need to install anything for the first one.
+
+### 1. In the web app (easiest)
+
+1. Open **https://support-skills-console.onrender.com**. If it hasn't been used for a while, the first load takes up to ~50 seconds.
+2. Pick one of the four tabs at the top.
+3. Paste your text, or press **Load example** to fill in a ready-made one.
+4. Press the purple button and read the coloured result:
+   - **Green ✓**: all good.
+   - **Red ✕**: problems to fix, each listed with a label like `BANNED PHRASE`.
+   - **Amber !**: worth a look.
+
+Every tab also has a **How to use this** box that explains it in plain words.
+
+| Tab | Paste this | Press | You get | Try this |
+|---|---|---|---|---|
+| **Triage** | The triage record (JSON) the triage skill produced | **Validate** | Whether category, team and priority follow the routing rules | Load the example, change `"team"` to `"billing-ops"`, then Validate: it says an outage must go to `incident-oncall` |
+| **Reply check** | A reply you're about to send. Optionally, put amounts from the customer's own account (e.g. `87.40`) in the second box | **Check reply** | PASS, or each figure not in the current policy, money written in words, and banned phrases | Type `Dear customer, you can get a full refund within 30 days.` The policy says 14 days, so it's flagged, and so is "dear customer" |
+| **QA report** | The week's ticket grades (JSON array or JSON Lines) | **Build report** | Pass rate, recurring problems, a downloadable `.md` report | Press Load example, then Build report: 1 of 4 tickets passes, with 3 patterns |
+| **Known issues** | A short description of the bug | **Search** | Matching changelog entries marked `KNOWN_OPEN` (share the workaround) or `FIXED` (customer may need to update), with a match % | Type `android app crashes when attaching a photo`: it finds KI-409 |
+
+**Show current policy** (on the Reply check tab) displays the rules every figure is checked against. The policy is read fresh on every check, so after someone edits `company-docs/refund-pricing-policy.md`, the next check uses the new rules.
+
+### 2. In Claude Code (how the skills are meant to be used)
+
+The four folders in `.claude/skills/` are Claude Code skills. Open this repository in [Claude Code](https://claude.com/claude-code) and Claude picks them up automatically. Then just ask in plain English:
+
+| You say | Claude uses | What happens |
+|---|---|---|
+| "Triage this ticket: *none of our 40 users can open boards, we get a 502*" | `ticket-triage` | Writes a triage record (flagged as an outage, urgent) and runs the validator until it passes |
+| "Draft a reply to this customer asking for a refund after 20 days on a monthly plan" | `support-reply` | Reads the live policy, writes an on-brand reply, and runs the figure check before giving it to you |
+| "Grade these closed tickets and write the weekly QA summary" | `qa-grading` | Scores each ticket against the rubric with quoted evidence, then builds the report |
+| "A customer says CSV export times out on 80k rows. Is this known?" | `bug-intake` | Searches the changelog, decides KNOWN_OPEN / FIXED / NEW, and writes an engineering bug report if it's new |
+
+You can also call a skill by name, e.g. type `/support-reply`.
+
+### 3. From the command line
+
+Each skill's checking script runs on its own (Python 3.12, no extra packages):
+
+```bash
+# Is this triage record valid?
+python .claude/skills/ticket-triage/scripts/validate_triage.py samples/triage-good.json
+
+# Does this reply quote anything not in the policy? (exit code 1 = problems found)
+python .claude/skills/support-reply/scripts/check_reply.py samples/reply-bad.txt --policy company-docs/refund-pricing-policy.md
+
+# Build the weekly QA report from grades
+python .claude/skills/qa-grading/scripts/aggregate_grades.py samples/grades.json --out qa-report.md
+
+# Is this bug already in the changelog?
+python .claude/skills/bug-intake/scripts/search_changelog.py company-docs/CHANGELOG.md "csv export timeout"
+```
+
+The `samples/` folder has a good and a bad example input for each one.
 
 ## Testing
 
