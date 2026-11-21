@@ -7,3 +7,7 @@ venv/
 Thumbs.db
 # local Claude Code settings (keep .claude/skills, which the app needs)
 .claude/settings.local.json
+
+# Office lock/temp files
+~$*
+*.tmp
