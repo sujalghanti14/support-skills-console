@@ -1,0 +1,1 @@
+{"ticket_id":"T-1093","category":"bug","team":"incident-oncall","priority":"urgent","escalation":"outage","confidence":0.92,"summary":"Entire 40-person workspace gets 502 errors opening boards.","reasoning":"'none of the 40 people' and '502' indicate workspace-wide failure."}

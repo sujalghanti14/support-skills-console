@@ -1,0 +1,7 @@
+[
+ {"ticket_id":"T-2201","team":"billing-ops","agent":"sam","scores":{"resolution":4,"accuracy":4,"tone":4,"ownership":4,"efficiency":3},"tags":[],"evidence":{},"notes":""},
+ {"ticket_id":"T-2202","team":"billing-ops","agent":"lee","scores":{"resolution":3,"accuracy":1,"tone":3,"ownership":3,"efficiency":3},"tags":["wrong_policy_figure"],"evidence":{"wrong_policy_figure":"full refund within 30 days"},"notes":"Policy window is 14 days."},
+ {"ticket_id":"T-2203","team":"tier1-support","agent":"ana","scores":{"resolution":2,"accuracy":3,"tone":2,"ownership":2,"efficiency":3},"tags":["banned_phrase","no_next_step"],"evidence":{"banned_phrase":"we apologize for any inconvenience","no_next_step":"Thanks for reaching out."},"notes":""},
+ {"ticket_id":"T-2204","team":"tier1-support","agent":"ana","scores":{"resolution":3,"accuracy":3,"tone":2,"ownership":3,"efficiency":2},"tags":["banned_phrase","excessive_back_and_forth"],"evidence":{"banned_phrase":"kindly share","excessive_back_and_forth":"could you send your workspace id"},"notes":""},
+ {"ticket_id":"T-2205","team":"tier2-support","agent":"raj","scores":{"resolution":3,"accuracy":3,"tone":3,"ownership":2,"efficiency":3},"tags":["no_next_step"],"evidence":{"no_next_step":"we'll look into it"},"notes":""}
+]

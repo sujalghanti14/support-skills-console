@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support Skills Console</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11.5' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+      </span>
+      <div>
+        <h1>Support Skills Console</h1>
+        <p class="tagline">Quality checks for your support team, before anything reaches a customer.</p>
+      </div>
+    </div>
+    <ol class="how" aria-label="How it works">
+      <li><span>1</span>Pick a tool below</li>
+      <li><span>2</span>Paste your text, or press <b>Load example</b></li>
+      <li><span>3</span>Run it and read the green / red result</li>
+    </ol>
+  </div>
+</header>
+
+<nav class="tabs-wrap" aria-label="Tools">
+  <div class="tabs" role="tablist">
+    <button role="tab" id="tab-triage" aria-controls="panel-triage" aria-selected="true" data-tab="triage">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h6"/></svg>Triage
+    </button>
+    <button role="tab" id="tab-reply" aria-controls="panel-reply" aria-selected="false" data-tab="reply">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z"/></svg>Reply check
+    </button>
+    <button role="tab" id="tab-qa" aria-controls="panel-qa" aria-selected="false" data-tab="qa">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>QA report
+    </button>
+    <button role="tab" id="tab-bugs" aria-controls="panel-bugs" aria-selected="false" data-tab="bugs">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>Known issues
+    </button>
+  </div>
+</nav>
+
+<main>
+  <!-- Triage -->
+  <section class="panel" id="panel-triage" role="tabpanel" aria-labelledby="tab-triage">
+    <div class="panel-head">
+      <h2>Validate a triage record</h2>
+      <p class="hint">When a new ticket arrives, the triage skill decides its <b>category</b>, which <b>team</b> gets it, and how <b>urgent</b> it is. This tool checks that decision follows the company's routing rules before the ticket is assigned.</p>
+    </div>
+    <details class="guide">
+      <summary>How to use this</summary>
+      <ul>
+        <li>Paste the JSON the triage skill produced (or press <b>Load example</b>).</li>
+        <li><b class="g">Green</b> = the record is consistent and can be routed.</li>
+        <li><b class="r">Red</b> = something doesn't match the rules, e.g. an unknown team, or an outage that isn't marked urgent. Each problem is listed.</li>
+      </ul>
+    </details>
+    <label for="triage-input">Triage record (JSON)</label>
+    <textarea id="triage-input" rows="10" spellcheck="false" placeholder='{ "ticket_id": "T-1093", "category": "bug", ... }'></textarea>
+    <div class="actions">
+      <button class="primary" id="triage-run">Validate</button>
+      <button id="triage-example">Load example</button>
+    </div>
+    <div class="result" id="triage-result" aria-live="polite"></div>
+  </section>
+
+  <!-- Reply -->
+  <section class="panel" id="panel-reply" role="tabpanel" aria-labelledby="tab-reply" hidden>
+    <div class="panel-head">
+      <h2>Check a reply draft</h2>
+      <p class="hint">Catches the mistakes that matter before a reply is sent: a refund or price that <b>isn't in the current policy</b>, money written in words, and phrases that break the company's <b>tone of voice</b>.</p>
+    </div>
+    <details class="guide">
+      <summary>How to use this</summary>
+      <ul>
+        <li>Paste the reply you're about to send (or press <b>Load example</b> to see a bad one).</li>
+        <li>If the reply mentions a number from the customer's own account, like the exact amount they were charged, type it in the second box so it isn't flagged.</li>
+        <li>Press <b>Show current policy</b> to see the rules every figure is checked against. They're read live, so policy updates apply immediately.</li>
+      </ul>
+    </details>
+    <label for="reply-input">Draft reply</label>
+    <textarea id="reply-input" rows="9" placeholder="Hi Dana, I've refunded your duplicate charge..."></textarea>
+    <label for="reply-allow">Figures from the customer's account <span class="opt">optional, comma-separated, e.g. <code>87.40</code></span></label>
+    <input id="reply-allow" type="text" autocomplete="off">
+    <div class="actions">
+      <button class="primary" id="reply-run">Check reply</button>
+      <button id="reply-example">Load example</button>
+      <button class="ghost" id="policy-toggle" aria-expanded="false" aria-controls="policy-view">Show current policy</button>
+    </div>
+    <pre class="doc" id="policy-view" hidden></pre>
+    <div class="result" id="reply-result" aria-live="polite"></div>
+  </section>
+
+  <!-- QA -->
+  <section class="panel" id="panel-qa" role="tabpanel" aria-labelledby="tab-qa" hidden>
+    <div class="panel-head">
+      <h2>Build the weekly QA report</h2>
+      <p class="hint">Each week a sample of closed tickets is scored against a quality rubric. Paste those scores here and you get the pass rate and the <b>recurring problems</b> to coach the team on.</p>
+    </div>
+    <details class="guide">
+      <summary>How to use this</summary>
+      <ul>
+        <li>Paste the grades (one JSON object per ticket), or press <b>Load example</b>.</li>
+        <li>A ticket <b>passes</b> with an average score of 3 or more out of 4, no score of 1, and no serious mistake such as a wrong refund figure.</li>
+        <li>A <b>pattern</b> is a problem seen on 2 or more tickets. Press <b>Download report</b> to share it.</li>
+      </ul>
+    </details>
+    <label for="qa-input">Grades (JSON)</label>
+    <textarea id="qa-input" rows="11" spellcheck="false" placeholder='[ { "ticket_id": "T-2201", "scores": { ... } } ]'></textarea>
+    <div class="actions">
+      <button class="primary" id="qa-run">Build report</button>
+      <button id="qa-example">Load example</button>
+    </div>
+    <div class="result" id="qa-result" aria-live="polite"></div>
+  </section>
+
+  <!-- Bugs -->
+  <section class="panel" id="panel-bugs" role="tabpanel" aria-labelledby="tab-bugs" hidden>
+    <div class="panel-head">
+      <h2>Is this a known issue?</h2>
+      <p class="hint">When a customer reports a bug, search the product changelog first. If it's already known, give them the workaround. If it's new, it needs a write-up for engineering.</p>
+    </div>
+    <details class="guide">
+      <summary>How to use this</summary>
+      <ul>
+        <li>Describe the problem in a few words, e.g. <i>"CSV export times out"</i>, and press <b>Search</b>.</li>
+        <li><span class="pill KNOWN_OPEN">KNOWN_OPEN</span> = not fixed yet; share the workaround. <span class="pill FIXED">FIXED</span> = fixed in that version; the customer may need to update.</li>
+        <li>Results are suggestions. Check it's really the same problem (same feature, same device) before replying.</li>
+      </ul>
+    </details>
+    <form id="bugs-form" class="row">
+      <label for="bugs-input" class="sr-only">Symptom</label>
+      <input id="bugs-input" type="search" placeholder="e.g. CSV export times out on a large workspace" autocomplete="off">
+      <button class="primary" id="bugs-run" type="submit">Search</button>
+    </form>
+    <div class="result" id="bugs-result" aria-live="polite"></div>
+  </section>
+</main>
+
+<footer class="foot">Policy and changelog are re-read on every check, so you're always checking against the latest version.</footer>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

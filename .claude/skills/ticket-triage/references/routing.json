@@ -1,0 +1,59 @@
+{
+  "categories": {
+    "billing": {
+      "team": "billing-ops",
+      "covers": "charges, invoices, refunds, plan changes, payment failures, tax/VAT",
+      "sla_minutes": 240
+    },
+    "account_access": {
+      "team": "tier1-support",
+      "covers": "login, password reset, 2FA, SSO for a single user, seat invites",
+      "sla_minutes": 120
+    },
+    "bug": {
+      "team": "tier2-support",
+      "covers": "something that used to work or should work is broken for this customer; errors, crashes, wrong data",
+      "sla_minutes": 240
+    },
+    "how_to": {
+      "team": "tier1-support",
+      "covers": "usage questions, configuration help, best practices",
+      "sla_minutes": 480
+    },
+    "feature_request": {
+      "team": "product-feedback",
+      "covers": "asking for something the product does not do",
+      "sla_minutes": 1440
+    },
+    "integration": {
+      "team": "tier2-support",
+      "covers": "Slack, Salesforce, Zapier, API, webhooks, SSO/SAML configuration",
+      "sla_minutes": 240
+    },
+    "cancellation": {
+      "team": "retention",
+      "covers": "wants to cancel, downgrade, or expresses intent to leave",
+      "sla_minutes": 120
+    },
+    "sales": {
+      "team": "sales",
+      "covers": "Enterprise pricing, quotes, procurement, security questionnaires for prospects",
+      "sla_minutes": 480
+    }
+  },
+  "escalation": {
+    "outage": {
+      "team": "incident-oncall",
+      "signals": "multiple users or whole workspace affected, service unreachable, widespread 5xx, data not loading for everyone, status-page-type language"
+    },
+    "security": {
+      "team": "security",
+      "signals": "suspected breach, unauthorized access, leaked credentials, vulnerability report, phishing impersonating us"
+    },
+    "legal": {
+      "team": "legal",
+      "signals": "lawyer/attorney, legal action, subpoena, GDPR/CCPA data-subject request, DPA, regulator, chargeback dispute threats citing law"
+    }
+  },
+  "priorities": ["urgent", "high", "normal", "low"]
+}

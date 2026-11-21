@@ -1,0 +1,14 @@
+# Render Blueprint: tells Render how to build and run the Support Skills Console.
+# Render reads this file automatically when you create a "Blueprint" from the GitHub repo.
+services:
+  - type: web
+    name: support-skills-console
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --chdir webapp --bind 0.0.0.0:$PORT --workers 2 --timeout 30 "app:create_app()"
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.4
