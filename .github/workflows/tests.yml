@@ -1,0 +1,34 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements-dev.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Skill scripts still work from the command line
+        run: |
+          python .claude/skills/ticket-triage/scripts/validate_triage.py samples/triage-good.json
+          python .claude/skills/support-reply/scripts/check_reply.py samples/reply-good.txt --policy company-docs/refund-pricing-policy.md --allow 87.40
+          ! python .claude/skills/support-reply/scripts/check_reply.py samples/reply-bad.txt --policy company-docs/refund-pricing-policy.md
+          python .claude/skills/qa-grading/scripts/aggregate_grades.py samples/grades.json --out /tmp/qa-report.md
+          python .claude/skills/bug-intake/scripts/search_changelog.py company-docs/CHANGELOG.md "csv export timeout"
+
+      - name: Unit, API and browser tests
+        run: python webapp/run_tests.py

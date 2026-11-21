@@ -28,7 +28,7 @@ python webapp/run_tests.py
 Run a single suite with `python webapp/run_tests.py unit`, `api` or `e2e`.
 
 - **unit** (`tests/test_units.py`): the scripts' pure functions, including edge cases (ranges, bool-as-int, word boundaries, live policy change).
-- **api** (`tests/test_api.py`): every endpoint through Flask's test client, including bad input (400/404/405/413), and checks the policy is reloaded live.
+- **api** (`tests/test_api.py`): every endpoint (and the security headers) through Flask's test client, including bad input (400/404/405/413), and checks the policy is reloaded live.
 - **e2e** (`tests/test_e2e.py`): starts the real server on a random port and drives headless Chromium with Playwright. Covers every tab's happy and error paths, keyboard navigation, persistence across reload, an HTML-injection attempt, a simulated server 500, the download, mobile width, and fails on any browser console error.
 
 They use the standard library's `unittest`. The e2e suite needs `playwright` with Chromium installed.

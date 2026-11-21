@@ -77,4 +77,6 @@ company-docs/      live documents the skills READ at runtime (not copied into th
   refund-pricing-policy.md
   CHANGELOG.md
 samples/           test inputs used to check each skill on its own
+webapp/            web UI that runs the same skill scripts, plus unit/API/browser tests
+submission/        project report (.docx) and presentation (.pptx)
 ```
